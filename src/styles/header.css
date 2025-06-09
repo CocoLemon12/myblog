@@ -1,0 +1,206 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+:root[data-theme="light"] {
+  --header-bg: #ffffff;
+  --header-shadow: rgba(0, 0, 0, 0.2);
+  --text-color: #333;
+  --text-hover: #666;
+  --border-hover: #333;
+}
+
+:root[data-theme="dark"] {
+  --header-bg: #1a1a1a;
+  --header-shadow: rgba(0, 0, 0, 0.4);
+  --text-color: #ffffff;
+  --text-hover: #cccccc;
+  --border-hover: #ffffff;
+}
+
+body {
+  margin: 0; 
+}
+
+.header {
+  background-color: var(--header-bg);
+  box-shadow: 0 2px 8px var(--header-shadow);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1000;
+  height: 80px;
+  display: flex;
+  align-items: center;
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  width: 100%;
+}
+
+.nav-left, .nav-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.nav-left {
+  justify-content: flex-start;
+}
+
+.nav-right {
+  justify-content: flex-end;
+}
+
+.nav-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo {
+  font-family: 'Poppins', sans-serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  text-decoration: none;
+  color: var(--text-color);
+  pointer-events: none;
+  user-select: none;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: var(--text-color);
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 1px;
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: var(--text-hover);
+  border-bottom: var(--border-hover) 5px solid;
+}
+
+.social-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.social-links a {
+  text-decoration: none;
+  color: var(--text-color);
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 1px;
+}
+
+.social-links a:hover {
+  color: var(--text-hover);
+}
+
+/* Add styles for the theme toggle button */
+.theme-toggle {
+  background: none;
+  border: none;
+  color: var(--text-color);
+  cursor: pointer;
+  padding: 0;
+  font-size: 1.2rem;
+  transition: transform 0.3s ease;
+}
+
+.theme-toggle:hover {
+  transform: rotate(15deg);
+  color: var(--text-hover);
+}
+
+/* Responsive adjustments */
+@media (max-width: 800px) {
+  .header {
+    height: auto;
+    padding: 0.5rem 1rem;
+  }
+
+  .nav-container {
+    flex-direction: column;
+    align-items: center; /* Center items horizontally */
+    gap: 0.8rem;
+    padding: 0.5rem 0;
+  }
+
+  .nav-left,
+  .nav-right {
+    flex: none;
+    width: 100%; /* Take full width */
+    justify-content: center; /* Center content */
+    text-align: center; /* Ensure text is centered */
+  }
+
+  .nav-center {
+    display: none; /* Hide the center element */
+  }
+
+  .logo {
+    font-size: 1.8rem;
+  }
+
+  .nav-links,
+  .social-links {
+    justify-content: center;
+    margin: 0.5rem 0;
+  }
+
+  .nav-links a {
+    font-size: 0.8rem;
+  }
+
+  .social-links a {
+    font-size: 0.8rem;
+  }
+}
+
+/* Responsive adjustments for mobile */
+@media (max-width: 576px) {
+  .nav-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .nav-left,
+  .nav-center,
+  .nav-right {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 0.5rem; /* Reduce margin */
+  }
+
+  .nav-links,
+  .social-links {
+    justify-content: center;
+  }
+
+  .logo {
+    font-size: 1.5rem; /* Adjust logo size */
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    padding-top: 0;
+  }
+}
+
