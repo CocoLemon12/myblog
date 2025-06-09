@@ -497,3 +497,100 @@
     font-size: 2rem;
   }
 }
+
+/* Existing styles in About.css go here */
+
+/* --- Modal Styles --- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensures the modal is on top */
+  backdrop-filter: blur(5px); /* Optional: adds a blur effect to the background */
+}
+
+.modal-content {
+  background: #fff;
+  padding: 25px;
+  border-radius: 10px;
+  position: relative;
+  max-width: 800px; /* Adjust max-width as needed */
+  width: 90%;
+  max-height: 90vh; /* Limits the modal height */
+  overflow-y: auto; /* Adds scroll if content overflows */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: fadeInScale 0.3s ease-out; /* Simple entry animation */
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.modal-close-button {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 30px;
+  cursor: pointer;
+  color: #333;
+  transition: color 0.2s ease;
+}
+
+.modal-close-button:hover {
+  color: #f00; /* Red color on hover for close button */
+}
+
+.modal-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.modal-title {
+  font-size: 2em;
+  color: #333;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.modal-description {
+  font-size: 1.1em;
+  color: #555;
+  line-height: 1.6;
+  text-align: center; /* Center align description for a cleaner look */
+}
+
+/* Responsive adjustments for modal */
+@media (max-width: 768px) {
+  .modal-content {
+    padding: 20px;
+  }
+
+  .modal-title {
+    font-size: 1.6em;
+  }
+
+  .modal-description {
+    font-size: 1em;
+  }
+}

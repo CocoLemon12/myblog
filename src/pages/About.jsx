@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import "../styles/About.css";
+
+// --- Icon Components (unchanged) ---
 const DistanceIcon = () => (
   <svg
     className="icon"
@@ -75,6 +77,32 @@ const StatCard = ({ icon, label, value, unit, position }) => (
   </div>
 );
 
+// --- New PlaceModal Component ---
+const PlaceModal = ({ show, onClose, place }) => {
+  if (!show) {
+    return null; // Don't render anything if the modal is not shown
+  }
+
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      {/* Prevent clicks on content from closing the modal */}
+      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+        <button className="modal-close-button" onClick={onClose}>
+          &times;{" "}
+          {/* HTML entity for a multiplication sign (looks like an 'x') */}
+        </button>
+        {place && (
+          <>
+            <img src={place.image} alt={place.name} className="modal-image" />
+            <h2 className="modal-title">{place.name}</h2>
+            <p className="modal-description">{place.description}</p>
+          </>
+        )}
+      </div>
+    </div>
+  );
+};
+
 function About() {
   const [animatedStats, setAnimatedStats] = useState({
     distance: 0,
@@ -98,47 +126,62 @@ function About() {
   const places = [
     {
       id: 1,
-      name: "Tagaytay, Cavite",
+      name: "Antipolo, Rizal",
       description:
-        "A scenic and challenging ride with a rewarding view of Taal Volcano.",
-      image: "/images/tagaytay.jpg",
+        "A popular cycling spot known for its accessible climbs and scenic views. It's a go-to for many cyclists in Metro Manila due to its proximity and varying gradients.",
+      image: "/images/Antipolo, Rizal.jpg",
     },
     {
       id: 2,
-      name: "Sierra Madre, Rizal",
+      name: "Baguio City",
       description:
-        "Known for its long climbs and beautiful mountain scenery, a favorite training ground.",
-      image: "/images/sierra-madre.jpg",
+        "The ultimate climbing challenge to the 'Summer Capital of the Philippines'. The ascent to Baguio offers breathtaking views but demands significant endurance.",
+      image: "/images/Baguio.jpg",
     },
     {
       id: 3,
-      name: "Baguio City",
+      name: "Maragondon, Cavite",
       description:
-        'The ultimate climbing challenge, reaching the "Summer Capital of the Philippines" on two wheels.',
-      image: "/images/baguio.jpg",
+        "Diverse cycling routes, from scenic roads to challenging climbs. Maragondon offers a mix of coastal views and inland routes, making it versatile for different ride preferences.",
+      image: "/images/Cavite.jpg",
     },
     {
       id: 4,
-      name: "Subic Bay, Zambales",
+      name: "Gapan, Nueva Ecija",
       description:
-        "Smooth roads and a mix of flats and hills make this a great spot for all-around training.",
-      image: "/images/subic.jpg",
+        "Cycling in Gapan, offering a mix of flat and rolling terrains. It's an excellent area for long, steady rides and experiencing provincial landscapes.",
+      image: "/images/Gapan, Nueva Ecija.jpg",
     },
     {
       id: 5,
-      name: "Kaybiang Tunnel, Cavite",
+      name: "Norzagaray, Bulacan",
       description:
-        "A popular cycling destination featuring the longest road tunnel in the Philippines.",
-      image: "/images/kaybiang.jpg",
+        "Explore the roads and trails around Norzagaray, Bulacan. Known for its challenging ascents and serene natural environment, it's a favorite for those seeking adventure.",
+      image: "/images/Norzagaray, Bulacan.jpg",
     },
     {
       id: 6,
-      name: "Antipolo, Rizal",
+      name: "Tagaytay City, Cavite",
       description:
-        "A quick escape from the city with accessible climbs and great food stops.",
-      image: "/images/antipolo.jpg",
+        "A classic cycling destination with stunning views of Taal Volcano. The cool climate and rolling hills make it a refreshing escape for cyclists.",
+      image: "/images/Tagaytay.jpg",
     },
   ];
+
+  // --- Modal State ---
+  const [showModal, setShowModal] = useState(false);
+  const [selectedPlace, setSelectedPlace] = useState(null);
+
+  const handleCardClick = (place) => {
+    setSelectedPlace(place);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedPlace(null); // Clear selected place when closing
+  };
+  // --- End Modal State ---
 
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 3;
@@ -154,10 +197,10 @@ function About() {
       (entries) => {
         if (entries[0].isIntersecting) {
           animateNumbers();
-          observer.disconnect(); // Animate only once
+          observer.disconnect();
         }
       },
-      { threshold: 0.1 } // Reduced threshold to trigger earlier
+      { threshold: 0.1 }
     );
 
     const currentStatsRef = statsRef.current;
@@ -276,11 +319,16 @@ function About() {
         </div>
       </div>
 
+      {/* --- Places Section with Modal Integration --- */}
       <div className="places-section">
         <h1 className="places-title">Places I've Visited</h1>
         <div className="places-grid">
           {paginatedPlaces.map((place) => (
-            <div key={place.id} className="place-card">
+            <div
+              key={place.id}
+              className="place-card"
+              onClick={() => handleCardClick(place)}
+            >
               <div className="place-card-image">
                 <img src={place.image} alt={place.name} />
               </div>
@@ -321,6 +369,14 @@ function About() {
           </button>
         </div>
       </div>
+      {/* --- End Places Section with Modal Integration --- */}
+
+      {/* --- Render the PlaceModal component --- */}
+      <PlaceModal
+        show={showModal}
+        onClose={handleCloseModal}
+        place={selectedPlace}
+      />
 
       <div ref={statsRef} className="stats-wrapper">
         <h1 className="stats-title">Rider Statistics</h1>
