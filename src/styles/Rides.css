@@ -1,12 +1,483 @@
-.rides {
+/* src/styles/Rides.css */
+
+/* Existing styles from previous steps */
+
+.rides-container {
+  padding-top: 70px; /* To account for fixed header */
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-left: 1.5rem; /* Ensure padding on sides */
+  padding-right: 1.5rem; /* Ensure padding on sides */
+  box-sizing: border-box;
+}
+
+.rides-container.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 70px);
+  padding: 2rem;
+  background-color: var(--bg-color);
+}
+
+.loading-spinner {
+  border: 5px solid var(--stat-card-border); /* Customize the border */
+  border-top: 5px solid var(--primary-color); /* Use your theme's primary color */
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 10px; /* Add some space between the spinner and the text */
+}
+
+.loading-trivia-card {
+  background: var(--card-bg);
+  border-radius: 15px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  padding: 2rem;
+  max-width: 600px;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  position: relative;
+  border: 1px solid var(--border-color);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.rides-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 3rem;
+  color: var(--text-primary);
+  text-align: center;
+}
+
+/* Styles for single RidePost view navigation */
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2.5rem;
+  margin-bottom: 2rem; /* Reduced margin slightly to make room for new button */
+  gap: 1rem;
+}
+
+.pagination-btn {
+  background-color: #007bff; /* Primary button color */
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-weight: 600;
+}
+
+.pagination-btn:disabled {
+  background-color: #6c757d; /* Gray for disabled */
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.current-ride-info {
+  font-size: 1.1em;
+  color: var(--text-primary);
+}
+
+/* Styles for the "View All Rides" / "Back to Current Ride" buttons */
+.view-all-rides-btn,
+.back-to-card-btn {
+  background-color: #28a745; /* Success green */
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-top: 1rem;
+  margin-bottom: 4rem; /* Spacing for the bottom of the section */
+  transition: background-color 0.3s ease;
+}
+
+.back-to-card-btn {
+    background-color: #17a2b8; /* Info blue */
+}
+
+
+.view-all-rides-btn:hover {
+  background-color: #218838;
+}
+
+.back-to-card-btn:hover {
+    background-color: #138496;
+}
+
+
+/* --- RidesTable Specific Styles --- */
+.rides-table-container {
+  width: 100%;
+  max-width: 1200px;
+  margin-bottom: 2rem; /* Space below table */
+  background-color: var(--bg-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem; /* Padding inside table container */
+  box-sizing: border-box;
+}
+
+.table-controls {
+  display: flex;
+  justify-content: flex-end; /* Align search to the right */
+  margin-bottom: 1.5rem;
+}
+
+.search-input {
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--text-secondary);
+  border-radius: 5px;
+  font-size: 1em;
+  color: var(--text-primary);
+  background-color: var(--bg-color);
+  width: 100%; /* Full width on small screens */
+  max-width: 300px; /* Limit width on larger screens */
+  box-sizing: border-box;
+}
+
+.search-input::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.7;
+}
+
+.table-wrapper {
+  overflow-x: auto; /* Enable horizontal scrolling on small screens */
+}
+
+.rides-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.rides-table th,
+.rides-table td {
+  padding: 1rem 0.8rem;
+  border-bottom: 1px solid var(--stat-card-border);
+  color: var(--text-primary);
+  white-space: nowrap; /* Prevent text wrapping in cells */
+}
+
+.rides-table th {
+  background-color: var(--nav-bg); /* Use nav background for table header */
+  font-weight: 600;
+  cursor: pointer;
+  position: sticky;
+  top: 0;
+  z-index: 2; /* Ensures header stays on top when scrolling */
+}
+
+.rides-table th:hover {
+  background-color: var(--text-secondary);
+  opacity: 0.9;
+}
+
+.rides-table tr:hover {
+  background-color: rgba(0, 0, 0, 0.05); /* Light hover for table rows */
+  cursor: pointer;
+}
+
+/* Dark mode adjustments for table hover */
+:root[data-theme="dark"] .rides-table tr:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.rides-table th .sort-icon {
+  margin-left: 0.5rem;
+  color: var(--text-secondary);
+  opacity: 0.6;
+}
+
+.rides-table th .sort-icon.active {
+  opacity: 1;
+  color: var(--text-primary);
+}
+
+.no-results {
   text-align: center;
   padding: 2rem;
+  color: var(--text-secondary);
 }
 
-.rides h1 {
+.table-row-clickable {
+    cursor: pointer;
+}
+
+
+/* Table Pagination Controls (different from single post pagination) */
+.table-pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1.5rem;
+  gap: 1rem;
+}
+
+.table-pagination-controls .pagination-btn {
+    background-color: var(--text-primary); /* Use text-primary for table pagination buttons */
+    color: var(--bg-color);
+}
+
+.table-pagination-controls .pagination-btn:hover {
+    background-color: var(--text-secondary); /* A different hover for table buttons */
+}
+
+.current-page-info {
+  font-size: 1em;
+  color: var(--text-primary);
+}
+
+
+/* Loading and Trivia Styles */
+.rides-container.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 70px);
+  padding: 2rem;
+  background-color: var(--bg-color);
+}
+
+.loading-trivia-card {
+  background: var(--card-bg);
+  border-radius: 15px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  padding: 2rem;
+  max-width: 600px;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  position: relative;
+  border: 1px solid var(--border-color);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.loading-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-align: center;
   margin-bottom: 1rem;
+  transition: color 0.3s ease;
 }
 
-.rides-list {
-  margin-top: 2rem;
+.loading-spinner {
+  border: 4px solid var(--border-color);
+  border-top: 4px solid var(--primary-color);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  transition: border-color 0.3s ease;
+}
+
+.loading-message {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  text-align: center;
+  margin: 1rem 0;
+  transition: color 0.3s ease;
+}
+
+.trivia-section {
+  width: 100%;
+  text-align: center;
+  padding: 1rem;
+  border-top: 1px solid var(--border-color);
+  transition: border-color 0.3s ease;
+}
+
+.trivia-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--primary-color);
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.trivia-content {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin: 1.5rem 0;
+  transition: color 0.3s ease;
+}
+
+.trivia-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.trivia-button {
+  background: var(--primary-color);
+  color: var(--text-on-primary);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.trivia-button:hover {
+  transform: translateY(-2px);
+  background-color: var(--primary-color-hover);
+}
+
+.trivia-button:active {
+  transform: translateY(0);
+}
+
+.trivia-counter {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive adjustments for table */
+@media (max-width: 768px) {
+  .rides-table-container {
+    padding: 1rem;
+  }
+
+  .table-controls {
+    justify-content: center;
+  }
+
+  .search-input {
+    max-width: none; /* Allow full width on smaller screens */
+  }
+
+  /* Make table scrollable but retain full width for content */
+  .rides-table {
+    display: block;
+    width: 100%;
+  }
+
+  .rides-table thead, .rides-table tbody, .rides-table th, .rides-table td, .rides-table tr {
+    display: block;
+  }
+
+  .rides-table thead tr {
+    position: absolute;
+    top: -9999px; /* Hide table headers visually on small screens */
+    left: -9999px;
+  }
+
+  .rides-table tr {
+    margin-bottom: 1rem;
+    border: 1px solid var(--stat-card-border);
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    background-color: var(--stat-card-bg);
+    padding: 1rem;
+  }
+
+  .rides-table td {
+    border: none;
+    position: relative;
+    padding-left: 50%; /* Space for pseudo-element label */
+    text-align: right;
+    white-space: normal; /* Allow text wrapping in cells */
+  }
+
+  .rides-table td::before {
+    content: attr(data-label); /* Use data-label for content */
+    position: absolute;
+    left: 10px;
+    width: calc(50% - 20px);
+    padding-right: 10px;
+    white-space: nowrap;
+    text-align: left;
+    font-weight: bold;
+    color: var(--text-primary);
+  }
+
+  /* Specific labels for each column */
+  .rides-table td:nth-of-type(1)::before { content: "Date"; }
+  .rides-table td:nth-of-type(2)::before { content: "Title"; }
+  .rides-table td:nth-of-type(3)::before { content: "Time"; }
+  .rides-table td:nth-of-type(4)::before { content: "Distance"; }
+  .rides-table td:nth-of-type(5)::before { content: "Elevation"; }
+
+  .rides-table th .sort-icon {
+    display: none; /* Hide sort icons in responsive table headers */
+  }
+}
+
+@media (max-width: 576px) {
+    .rides-title {
+        font-size: 2rem;
+        padding-top: 2.2rem;
+    }
+
+    .search-input {
+        font-size: 0.9em;
+        padding: 0.7rem 0.8rem;
+    }
+
+    .pagination-controls .pagination-btn,
+    .view-all-rides-btn,
+    .back-to-card-btn {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.9em;
+    }
+
+    .current-ride-info, .current-page-info {
+        font-size: 0.9em;
+    }
+
+    .loading-trivia-card {
+        padding: 1.5rem;
+        width: 95%;
+    }
+
+    .loading-title {
+        font-size: 1.5rem;
+    }
+
+    .trivia-title {
+        font-size: 1.2rem;
+    }
+
+    .trivia-content {
+        font-size: 1rem;
+    }
 }

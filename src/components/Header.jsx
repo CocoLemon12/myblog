@@ -29,7 +29,12 @@ function Header({ toggleTheme, theme, activeSection }) {
               </Link>
             </li>
             <li>
-              <Link to="/rides">RIDES</Link>
+              <Link
+                to="/rides"
+                className={activeSection === "/rides" ? "active" : ""}
+              >
+                RIDES
+              </Link>
             </li>
           </ul>
         </div>
